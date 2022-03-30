@@ -9,6 +9,7 @@ import SingleSelectFilter from '../SingleSelectFilter';
 import Chip from '../Chip';
 import RangeFilter from '../RangeFilter';
 import './FilterSection.css';
+import DateRange from '../DateRange';
 
 const filterVisibleStatusObj = (optionList, inputText) => {
   const res = {};
@@ -109,6 +110,16 @@ class FilterSection extends React.Component {
       };
     });
     this.props.onAfterDrag(lowerBound, upperBound, minValue, maxValue, rangeStep);
+  }
+
+  handleDragDateRange() {
+    this.setState(() => {
+      const newFilterStatus = [];
+      return {
+        filterStatus: newFilterStatus,
+      };
+    });
+    this.props.onAfterDrag();
   }
 
   getSearchInput() {
@@ -330,10 +341,13 @@ class FilterSection extends React.Component {
     let isSearchFilter = false;
     let isTextFilter = false;
     let isRangeFilter = false;
+    let isDateRange = false;
     if (this.props.isSearchFilter) {
       isSearchFilter = true;
     } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'singleSelect') {
       isTextFilter = true;
+    } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'dateRange') {
+      isDateRange = true;
     } else {
       isRangeFilter = true;
     }
@@ -533,6 +547,12 @@ class FilterSection extends React.Component {
                   );
                 }) : null
           }
+          {
+            isDateRange && this.state.isExpanded && this.props.options
+              .filter((option) => this.state.optionsVisibleStatus[option.text])
+              // eslint-disable-next-line max-len
+              .map((option, index) => <DateRange key={index} dates={option.dates} onDrag={(e) => { console.log(e); }} onAfterDrag={(e) => { console.log(e); }} />)
+          }
           {isTextFilter && this.getShowMoreButton()}
         </div>
       </div>
@@ -544,7 +564,7 @@ FilterSection.propTypes = {
   title: PropTypes.string,
   tooltip: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
-    filterType: PropTypes.oneOf(['singleSelect', 'range']).isRequired,
+    filterType: PropTypes.oneOf(['singleSelect', 'range', 'dateRange']).isRequired,
     text: PropTypes.string,
     count: PropTypes.number, // both filters need this for access control
 
@@ -557,6 +577,8 @@ FilterSection.propTypes = {
     max: PropTypes.number,
     rangeStep: PropTypes.number, // by default 1
 
+    // for date range filter
+    dates: PropTypes.arrayOf(PropTypes.string),
   })),
   onSelect: PropTypes.func.isRequired,
   onCombineOptionToggle: PropTypes.func,

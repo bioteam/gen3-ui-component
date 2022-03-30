@@ -161,7 +161,7 @@ FilterList.propTypes = {
     tooltip: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.shape({
       text: PropTypes.string,
-      filterType: PropTypes.oneOf(['singleSelect', 'range']),
+      filterType: PropTypes.oneOf(['singleSelect', 'range', 'dateRange']),
 
       // for single select filter
       count: PropTypes.number,
@@ -172,6 +172,9 @@ FilterList.propTypes = {
       // for range filter
       min: PropTypes.number,
       max: PropTypes.number,
+
+      // for date range
+      dates: PropTypes.arrayOf(PropTypes.string),
     })),
   })).isRequired,
   expandedStatus: PropTypes.arrayOf(PropTypes.bool),
