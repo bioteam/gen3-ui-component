@@ -151,6 +151,8 @@ storiesOf('Chart', module)
   .add('PercentageStackedBarChart with Dates', () => (
     <PercentageStackedBarChart
       data={pangoData}
+      primaryKey='name'
+      secondaryKey='date'
       title='percentage stacked bar chart date'
     />
   ))
