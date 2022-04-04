@@ -193,7 +193,7 @@ storiesOf('Filters', module)
   .add('DateRange', () => (
     <div>
       <DateRange
-        dates={['asdf', 'asdfasdf', 'asdff', '47832947']}
+        dates={['04-03-1993', '03-02-1999', '03-03-2000', '03-02-2022']}
         onDrag={(e) => { console.log(e); }}
         onAfterDrag={(e) => { console.log(e); }}
       />

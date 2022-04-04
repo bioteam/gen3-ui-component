@@ -7,8 +7,12 @@ import './DateRange.css';
 class DateRange extends React.Component {
   constructor(props) {
     super(props);
+    const marksToShow = {};
+    const lastIndex = this.props.dates.length - 1;
+    marksToShow[0] = this.props.dates[0];
+    marksToShow[lastIndex] = this.props.dates[lastIndex];
     this.state = {
-      marks: { ...this.props.dates },
+      marks: marksToShow,
     };
   }
 
