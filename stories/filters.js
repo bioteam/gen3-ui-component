@@ -17,6 +17,21 @@ const projectOptions = [
   { text: 'ndh-test', filterType: 'singleSelect', count: 123 },
 ];
 
+const dateOptions = [
+  { text: '2021-01-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-02-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-03-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-04-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-05-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-06-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-07-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-08-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-09-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-10-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-11-01', filterType: 'dateRange', count: 10 },
+  { text: '2021-12-01', filterType: 'dateRange', count: 10 },
+]
+
 const studyOptions = [
   { text: 'MACS', filterType: 'singleSelect', count: 123 },
   { text: 'WIHS', filterType: 'singleSelect', count: 123 },
@@ -114,6 +129,7 @@ const subjectSections = [
   { title: 'Race', options: raceOptions },
   { title: 'Ethnicity', options: ethnicityOptions },
   { title: 'Age', options: ageOptions },
+  { title: 'Date', options: dateOptions },
   { title: 'Big List', options: guidOptions },
 ];
 
@@ -194,8 +210,8 @@ storiesOf('Filters', module)
     <div>
       <DateRange
         dates={['04-03-1993', '03-02-1999', '03-03-2000', '03-02-2022']}
-        onDrag={(e) => { console.log(e); }}
-        onAfterDrag={(e) => { console.log(e); }}
+        onDrag={() => {}}
+        onAfterDrag={() => {}}
       />
     </div>
   ))
@@ -227,6 +243,15 @@ storiesOf('Filters', module)
     <FilterSection
       title={'Ethnicity'}
       options={ethnicityOptions}
+      onSelect={action('checked')}
+      onAfterDrag={action('range change')}
+      tierAccessLimit={1000}
+    />
+  ))
+  .add('FilterSection With Date Range Filter', () => (
+    <FilterSection
+      title={'Date Range Selector'}
+      options={dateOptions}
       onSelect={action('checked')}
       onAfterDrag={action('range change')}
       tierAccessLimit={1000}

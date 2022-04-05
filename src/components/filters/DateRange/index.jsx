@@ -13,7 +13,29 @@ class DateRange extends React.Component {
     this.state = {
       marks: marksToShow,
       lastIndex,
+      lowerBound: 0,
+      upperBound: lastIndex,
     };
+  }
+
+  onAfterChange() {
+    this.props.onAfterDrag(this.state.lowerBound, this.state.upperBound);
+  }
+
+  onChange(range) {
+    this.setState((prevState) => {
+      const lowerBound = prevState.lowerBound !== range[0] ? range[0] : prevState.lowerBound;
+      const upperBound = prevState.upperBound !== range[1] ? range[1] : prevState.upperBound;
+      const marksToShow = {};
+      marksToShow[lowerBound] = this.props.dates[lowerBound];
+      marksToShow[upperBound] = this.props.dates[upperBound];
+      return {
+        ...prevState,
+        marks: marksToShow,
+        lowerBound,
+        upperBound,
+      };
+    });
   }
 
   render() {
@@ -26,8 +48,8 @@ class DateRange extends React.Component {
           max={this.state.lastIndex}
           marks={this.state.marks}
           step={1}
-          onChange={(e) => { this.props.onDrag(e); }}
-          onAfterChange={(e) => { this.props.onAfterDrag(e); }}
+          onChange={(range) => { this.onChange(range); }}
+          onAfterChange={(range) => { this.onAfterChange(range); }}
           defaultValue={[0, this.state.lastIndex]}
         />
       </div>
@@ -37,7 +59,6 @@ class DateRange extends React.Component {
 
 DateRange.propTypes = {
   label: PropTypes.string,
-  onDrag: PropTypes.func.isRequired,
   onAfterDrag: PropTypes.func.isRequired,
   dates: PropTypes.arrayOf(PropTypes.string),
 };

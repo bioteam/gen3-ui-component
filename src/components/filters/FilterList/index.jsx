@@ -78,6 +78,17 @@ class FilterList extends React.Component {
     this.props.onAfterDrag(sectionIndex, lowerBound, upperBound, minValue, maxValue, rangeStep);
   }
 
+  handleDateRangeDragFilter(sectionIndex, lowerBound, upperBound) {
+    this.setState((prevState) => {
+      const newFilterStatus = prevState.filterStatus.slice(0);
+      // newFilterStatus[sectionIndex] = [lowerBound, upperBound];
+      return {
+        filterStatus: newFilterStatus,
+      };
+    });
+    this.props.onAfterDateRangeDrag(sectionIndex, lowerBound, upperBound);
+  }
+
   toggleFilters(openAll) {
     this.sectionRefs.forEach((ref) => {
       ref.current.toggleSection(openAll);
@@ -127,6 +138,9 @@ class FilterList extends React.Component {
           }
           onAfterDrag={
             (...args) => this.handleDragRangeFilter(index, ...args)
+          }
+          onAfterDateRangeDrag={
+            (...args) => this.handleDateRangeDragFilter(index, ...args)
           }
           hideZero={this.props.hideZero}
           tierAccessLimit={this.props.tierAccessLimit}
@@ -187,6 +201,7 @@ FilterList.propTypes = {
   onSelect: PropTypes.func,
   onCombineOptionToggle: PropTypes.func,
   onAfterDrag: PropTypes.func,
+  onAfterDateRangeDrag: PropTypes.func,
   hideZero: PropTypes.bool,
   hideEmptyFilterSection: PropTypes.bool,
   tierAccessLimit: PropTypes.number,
@@ -202,6 +217,7 @@ FilterList.defaultProps = {
   onSelect: () => {},
   onCombineOptionToggle: () => {},
   onAfterDrag: () => {},
+  onAfterDateRangeDrag: () => {},
   hideZero: true,
   hideEmptyFilterSection: false,
   tierAccessLimit: undefined,

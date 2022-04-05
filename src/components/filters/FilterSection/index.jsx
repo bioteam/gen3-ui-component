@@ -112,14 +112,19 @@ class FilterSection extends React.Component {
     this.props.onAfterDrag(lowerBound, upperBound, minValue, maxValue, rangeStep);
   }
 
-  handleDragDateRange() {
+  handleDragDateRange(lowerBound, upperBound) {
     this.setState(() => {
-      const newFilterStatus = [];
+      const newFilterStatus = {};
+      const { dates } = this.props.options[0];
+      const lowerBoundDate = dates[lowerBound];
+      const upperBoundDate = dates[upperBound];
+      newFilterStatus[lowerBoundDate] = true;
+      newFilterStatus[upperBoundDate] = true;
       return {
         filterStatus: newFilterStatus,
       };
     });
-    this.props.onAfterDrag();
+    this.props.onAfterDateRangeDrag(lowerBound, upperBound);
   }
 
   getSearchInput() {
@@ -342,12 +347,14 @@ class FilterSection extends React.Component {
     let isTextFilter = false;
     let isRangeFilter = false;
     let isDateRange = false;
+    let dateRangeOptions = [];
     if (this.props.isSearchFilter) {
       isSearchFilter = true;
     } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'singleSelect') {
       isTextFilter = true;
     } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'dateRange') {
       isDateRange = true;
+      dateRangeOptions = this.props.options[0].dates.sort((a, b) => Date.parse(a) < Date.parse(b));
     } else {
       isRangeFilter = true;
     }
@@ -548,10 +555,13 @@ class FilterSection extends React.Component {
                 }) : null
           }
           {
-            isDateRange && this.state.isExpanded && this.props.options
-              .filter((option) => this.state.optionsVisibleStatus[option.text])
-              // eslint-disable-next-line max-len
-              .map((option, index) => <DateRange key={index} dates={option.dates} onDrag={() => {}} onAfterDrag={() => {}} />)
+            isDateRange && this.state.isExpanded
+            && (
+              <DateRange
+                dates={dateRangeOptions}
+                onAfterDrag={(lb, ub) => this.handleDragDateRange(lb, ub)}
+              />
+            )
           }
           {isTextFilter && this.getShowMoreButton()}
         </div>
@@ -583,6 +593,7 @@ FilterSection.propTypes = {
   onSelect: PropTypes.func.isRequired,
   onCombineOptionToggle: PropTypes.func,
   onAfterDrag: PropTypes.func.isRequired,
+  onAfterDateRangeDrag: PropTypes.func.isRequired,
   onClear: PropTypes.func,
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,
