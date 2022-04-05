@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SingleSelectFilter from '../src/components/filters/SingleSelectFilter';
 import RangeFilter from '../src/components/filters/RangeFilter';
+import DateRange from '../src/components/filters/DateRange';
 import FilterSection from '../src/components/filters/FilterSection';
 import FilterList from '../src/components/filters/FilterList';
 import FilterGroup from '../src/components/filters/FilterGroup';
@@ -14,6 +15,10 @@ const projectOptions = [
   { text: 'ndh-dmid-LMV', filterType: 'singleSelect', count: 123 },
   { text: 'ndh-vir-simulation', filterType: 'singleSelect', count: 123 },
   { text: 'ndh-test', filterType: 'singleSelect', count: 123 },
+];
+
+const dateOptions = [
+  { filterType: 'dateRange', dates: ['2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-05-01', '2021-06-01', '2021-07-01', '2021-08-01', '2021-09-01', '2021-10-01', '2021-11-01', '2021-12-01'] },
 ];
 
 const studyOptions = [
@@ -105,6 +110,7 @@ const fileCountOptions = [
 const projectSections = [
   { title: 'Project', options: projectOptions },
   { title: 'Study', options: studyOptions },
+  { title: 'Collection Date', options: dateOptions },
 ];
 
 const subjectSections = [
@@ -113,6 +119,7 @@ const subjectSections = [
   { title: 'Race', options: raceOptions },
   { title: 'Ethnicity', options: ethnicityOptions },
   { title: 'Age', options: ageOptions },
+  { title: 'Date', options: dateOptions },
   { title: 'Big List', options: guidOptions },
 ];
 
@@ -156,6 +163,7 @@ const filterConfig = {
     fields: [
       'project',
       'study',
+      'dates',
     ],
   },
   {
@@ -187,6 +195,15 @@ storiesOf('Filters', module)
       <SingleSelectFilter label='Option6' onSelect={action('checked')} count={123456789} accessible />
       <SingleSelectFilter label='Option7' onSelect={action('checked')} count={-1} accessible tierAccessLimit={123456789} />
       <SingleSelectFilter label='Option8' onSelect={action('checked')} count={123456789} accessible={false} />
+    </div>
+  ))
+  .add('DateRange', () => (
+    <div>
+      <DateRange
+        dates={['04-03-1993', '03-02-1999', '03-03-2000', '03-02-2022']}
+        onDrag={() => {}}
+        onAfterDrag={() => {}}
+      />
     </div>
   ))
   .add('RangeFilter', () => (
@@ -222,6 +239,15 @@ storiesOf('Filters', module)
       tierAccessLimit={1000}
     />
   ))
+  .add('FilterSection With Date Range Filter', () => (
+    <FilterSection
+      title={'Date Range Selector'}
+      options={dateOptions}
+      onSelect={action('checked')}
+      onAfterDrag={action('range change')}
+      tierAccessLimit={1000}
+    />
+  ))
   .add('FilterSection for array-type field', () => (
     <FilterSection
       title={'Consent Codes'}
@@ -246,17 +272,17 @@ storiesOf('Filters', module)
           return {
             options: guidOptions
               .slice(offset, offset + pageSize)
-              .map(option => ({ value: option.text, label: option.text })),
+              .map((option) => ({ value: option.text, label: option.text })),
             hasMore: guidOptions.length > offset + pageSize,
           };
         }
         const filteredOptions = guidOptions.filter(
-          option => option.text.indexOf(searchString) !== -1,
+          (option) => option.text.indexOf(searchString) !== -1,
         );
         return {
           options: filteredOptions
             .slice(offset, offset + pageSize)
-            .map(option => ({ value: option.text, label: option.text })),
+            .map((option) => ({ value: option.text, label: option.text })),
           hasMore: filteredOptions.length > offset + pageSize,
         };
       }}
