@@ -14,6 +14,17 @@ const virusData = [
   { name: 'CA04', value: 1890 },
 ];
 
+const pangoData = [
+  { name: 'C.32', value: 1000, date: '2021-04-30' },
+  { name: 'P.1.14', value: 150, date: '2020-04-09' },
+  { name: 'N.4', value: 205, date: '2021-06-18' },
+  { name: 'N.4', value: 341, date: '2020-04-09' },
+  { name: 'C.32', value: 1243, date: '2020-04-09' },
+  { name: 'C.32', value: 5234, date: '2021-04-30' },
+  { name: 'P.1.14', value: 124, date: '2021-04-30' },
+  { name: 'P.1.14', value: 854, date: '2021-04-30' },
+];
+
 const genderData = [
   { name: 'female', value: 400 },
   { name: 'male', value: 300 },
@@ -136,6 +147,14 @@ storiesOf('Chart', module)
   ))
   .add('PercentageStackedBarChart', () => (
     <PercentageStackedBarChart data={virusData} title='percentage stacked bar chart title' />
+  ))
+  .add('PercentageStackedBarChart with Dates', () => (
+    <PercentageStackedBarChart
+      data={pangoData}
+      primaryKey='name'
+      secondaryKey='date'
+      title='percentage stacked bar chart date'
+    />
   ))
   .add('PercentageStackedBarChart with customized colors', () => (
     <PercentageStackedBarChart
