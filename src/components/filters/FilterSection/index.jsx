@@ -551,7 +551,7 @@ class FilterSection extends React.Component {
             isDateRange && this.state.isExpanded && this.props.options
               .filter((option) => this.state.optionsVisibleStatus[option.text])
               // eslint-disable-next-line max-len
-              .map((option, index) => <DateRange key={index} dates={option.dates} onDrag={(e) => { console.log(e); }} onAfterDrag={(e) => { console.log(e); }} />)
+              .map((option, index) => <DateRange key={index} dates={option.dates} onDrag={() => {}} onAfterDrag={() => {}} />)
           }
           {isTextFilter && this.getShowMoreButton()}
         </div>

@@ -7,12 +7,12 @@ import './DateRange.css';
 class DateRange extends React.Component {
   constructor(props) {
     super(props);
-    const marksToShow = {};
     const lastIndex = this.props.dates.length - 1;
-    marksToShow[0] = this.props.dates[0];
+    const marksToShow = { 0: this.props.dates[0] };
     marksToShow[lastIndex] = this.props.dates[lastIndex];
     this.state = {
       marks: marksToShow,
+      lastIndex,
     };
   }
 
@@ -23,12 +23,12 @@ class DateRange extends React.Component {
           && <p className='g3-date-filter__title'>{this.props.label}</p>}
         <Range
           min={0}
-          max={this.props.dates.length - 1}
+          max={this.state.lastIndex}
           marks={this.state.marks}
           step={1}
           onChange={(e) => { this.props.onDrag(e); }}
           onAfterChange={(e) => { this.props.onAfterDrag(e); }}
-          defaultValue={[0, this.props.dates.length - 1]}
+          defaultValue={[0, this.state.lastIndex]}
         />
       </div>
     );
