@@ -18,19 +18,8 @@ const projectOptions = [
 ];
 
 const dateOptions = [
-  { text: '2021-01-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-02-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-03-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-04-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-05-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-06-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-07-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-08-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-09-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-10-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-11-01', filterType: 'dateRange', count: 10 },
-  { text: '2021-12-01', filterType: 'dateRange', count: 10 },
-]
+  { filterType: 'dateRange', dates: ['2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-05-01', '2021-06-01', '2021-07-01', '2021-08-01', '2021-09-01', '2021-10-01', '2021-11-01', '2021-12-01'] },
+];
 
 const studyOptions = [
   { text: 'MACS', filterType: 'singleSelect', count: 123 },
@@ -121,6 +110,7 @@ const fileCountOptions = [
 const projectSections = [
   { title: 'Project', options: projectOptions },
   { title: 'Study', options: studyOptions },
+  { title: 'Collection Date', options: dateOptions },
 ];
 
 const subjectSections = [
@@ -173,6 +163,7 @@ const filterConfig = {
     fields: [
       'project',
       'study',
+      'dates',
     ],
   },
   {
@@ -281,17 +272,17 @@ storiesOf('Filters', module)
           return {
             options: guidOptions
               .slice(offset, offset + pageSize)
-              .map(option => ({ value: option.text, label: option.text })),
+              .map((option) => ({ value: option.text, label: option.text })),
             hasMore: guidOptions.length > offset + pageSize,
           };
         }
         const filteredOptions = guidOptions.filter(
-          option => option.text.indexOf(searchString) !== -1,
+          (option) => option.text.indexOf(searchString) !== -1,
         );
         return {
           options: filteredOptions
             .slice(offset, offset + pageSize)
-            .map(option => ({ value: option.text, label: option.text })),
+            .map((option) => ({ value: option.text, label: option.text })),
           hasMore: filteredOptions.length > offset + pageSize,
         };
       }}

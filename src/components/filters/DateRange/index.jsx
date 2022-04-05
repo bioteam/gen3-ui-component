@@ -8,13 +8,14 @@ class DateRange extends React.Component {
   constructor(props) {
     super(props);
     const lastIndex = this.props.dates.length - 1;
-    const marksToShow = { 0: this.props.dates[0] };
-    marksToShow[lastIndex] = this.props.dates[lastIndex];
+    const marksToShow = {};
+    marksToShow[this.props.lowerBound] = this.props.dates[this.props.lowerBound];
+    marksToShow[this.props.upperBound] = this.props.dates[this.props.upperBound];
     this.state = {
       marks: marksToShow,
       lastIndex,
-      lowerBound: 0,
-      upperBound: lastIndex,
+      lowerBound: this.props.lowerBound,
+      upperBound: this.props.upperBound,
     };
   }
 
@@ -50,7 +51,7 @@ class DateRange extends React.Component {
           step={1}
           onChange={(range) => { this.onChange(range); }}
           onAfterChange={(range) => { this.onAfterChange(range); }}
-          defaultValue={[0, this.state.lastIndex]}
+          defaultValue={[this.state.lowerBound, this.state.upperBound]}
         />
       </div>
     );
@@ -61,6 +62,8 @@ DateRange.propTypes = {
   label: PropTypes.string,
   onAfterDrag: PropTypes.func.isRequired,
   dates: PropTypes.arrayOf(PropTypes.string),
+  lowerBound: PropTypes.number.isRequired,
+  upperBound: PropTypes.number.isRequired,
 };
 
 DateRange.defaultProps = {

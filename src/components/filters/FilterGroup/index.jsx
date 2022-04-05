@@ -211,13 +211,16 @@ class FilterGroup extends React.Component {
     });
   }
 
-  handleDateRangeDrag() {
+  handleDateRangeDrag(sectionIndex, dateRanges, lowerBound, upperBound) {
     this.setState((prevState) => {
       // update filter status
       const newFilterStatus = prevState.filterStatus.slice(0);
+      newFilterStatus[prevState.selectedTabIndex][sectionIndex] = [lowerBound, upperBound];
 
       // update filter results
       const newFilterResults = prevState.filterResults;
+      const field = this.props.filterConfig.tabs[prevState.selectedTabIndex].fields[sectionIndex];
+      newFilterResults[field] = { selectedValues: dateRanges };
       return {
         filterStatus: newFilterStatus,
         filterResults: newFilterResults,

@@ -113,17 +113,9 @@ class FilterSection extends React.Component {
   }
 
   handleDragDateRange(lowerBound, upperBound) {
-    this.setState(() => {
-      const newFilterStatus = {};
-      const { dates } = this.props.options[0];
-      const lowerBoundDate = dates[lowerBound];
-      const upperBoundDate = dates[upperBound];
-      newFilterStatus[lowerBoundDate] = true;
-      newFilterStatus[upperBoundDate] = true;
-      return {
-        filterStatus: newFilterStatus,
-      };
-    });
+    this.setState(() => ({
+      filterStatus: [lowerBound, upperBound],
+    }));
     this.props.onAfterDateRangeDrag(lowerBound, upperBound);
   }
 
@@ -555,13 +547,22 @@ class FilterSection extends React.Component {
                 }) : null
           }
           {
-            isDateRange && this.state.isExpanded
-            && (
-              <DateRange
-                dates={dateRangeOptions}
-                onAfterDrag={(lb, ub) => this.handleDragDateRange(lb, ub)}
-              />
-            )
+            isDateRange && this.state.isExpanded && this.props.options
+              .filter((option) => this.state.optionsVisibleStatus[option.text])
+              .map(() => {
+                const lowerBound = this.state.filterStatus.length !== 2
+                  ? 0 : this.state.filterStatus[0];
+                const upperBound = this.state.filterStatus.length !== 2
+                  ? (dateRangeOptions.length - 1) : this.state.filterStatus[1];
+                return (
+                <DateRange
+                  dates={dateRangeOptions}
+                  lowerBound={lowerBound}
+                  upperBound={upperBound}
+                  onAfterDrag={(lb, ub) => this.handleDragDateRange(lb, ub)}
+                />
+                );
+              })
           }
           {isTextFilter && this.getShowMoreButton()}
         </div>

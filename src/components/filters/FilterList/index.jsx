@@ -81,12 +81,18 @@ class FilterList extends React.Component {
   handleDateRangeDragFilter(sectionIndex, lowerBound, upperBound) {
     this.setState((prevState) => {
       const newFilterStatus = prevState.filterStatus.slice(0);
-      // newFilterStatus[sectionIndex] = [lowerBound, upperBound];
+      newFilterStatus[sectionIndex] = [lowerBound, upperBound];
       return {
         filterStatus: newFilterStatus,
       };
     });
-    this.props.onAfterDateRangeDrag(sectionIndex, lowerBound, upperBound);
+    const selectedDates = [];
+    this.props.sections[sectionIndex].options[0].dates.forEach((date, index) => {
+      if (index >= lowerBound && index <= upperBound) {
+        selectedDates.push((date));
+      }
+    });
+    this.props.onAfterDateRangeDrag(sectionIndex, selectedDates, lowerBound, upperBound);
   }
 
   toggleFilters(openAll) {
