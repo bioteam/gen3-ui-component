@@ -46,14 +46,14 @@ const getPercentageData = (chartData, percentageFixedPoint, primaryKey) => {
 const dateHasher = (
   chartData,
   primaryKey,
-  secondaryKey
+  secondaryKey,
 ) => {
   const dateHash = {};
   chartData.forEach((dataPoint) => {
     const variantHash = dateHash[dataPoint[secondaryKey]];
-    let storedData = {};
+    const storedData = {};
     storedData[primaryKey] = dataPoint[primaryKey];
-    storedData["value"] = dataPoint.value;
+    storedData.value = dataPoint.value;
     if (variantHash == null) {
       dateHash[dataPoint[secondaryKey]] = [storedData];
     } else {
@@ -67,15 +67,15 @@ const percentageMapper = (
   hashedDates,
   percentageFixedPoint,
   primaryKey,
-  secondaryKey
+  secondaryKey,
 ) => {
   const percentageMap = [];
-  for (let k in hashedDates) {
+  Object.keys(hashedDates).forEach((k) => {
     const pcts = getPercentageData(hashedDates[k], percentageFixedPoint, primaryKey);
-    let hashKey = {};
+    const hashKey = {};
     hashKey[secondaryKey] = k;
     percentageMap.push({ ...hashKey, ...pcts });
-  }
+  });
   return percentageMap;
 };
 
@@ -83,18 +83,18 @@ const mapData = (
   chartData,
   percentageFixedPoint,
   primaryKey,
-  secondaryKey
+  secondaryKey,
 ) => {
   if (secondaryKey === '') {
     const dat = getPercentageData(chartData, percentageFixedPoint, primaryKey);
-    return [dat]
+    return [dat];
   }
   const dataSortedByDates = dateHasher(chartData, primaryKey, secondaryKey);
   const mappedData = percentageMapper(
     dataSortedByDates,
     percentageFixedPoint,
     primaryKey,
-    secondaryKey
+    secondaryKey,
   );
   return mappedData;
 };
