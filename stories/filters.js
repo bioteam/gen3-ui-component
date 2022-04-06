@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import SingleSelectFilter from '../src/components/filters/SingleSelectFilter';
 import RangeFilter from '../src/components/filters/RangeFilter';
+import DateRange from '../src/components/filters/DateRange';
 import FilterSection from '../src/components/filters/FilterSection';
 import FilterList from '../src/components/filters/FilterList';
 import FilterGroup from '../src/components/filters/FilterGroup';
@@ -187,6 +188,15 @@ storiesOf('Filters', module)
       <SingleSelectFilter label='Option6' onSelect={action('checked')} count={123456789} accessible />
       <SingleSelectFilter label='Option7' onSelect={action('checked')} count={-1} accessible tierAccessLimit={123456789} />
       <SingleSelectFilter label='Option8' onSelect={action('checked')} count={123456789} accessible={false} />
+    </div>
+  ))
+  .add('DateRange', () => (
+    <div>
+      <DateRange
+        dates={['04-03-1993', '03-02-1999', '03-03-2000', '03-02-2022']}
+        onDrag={() => {}}
+        onAfterDrag={() => {}}
+      />
     </div>
   ))
   .add('RangeFilter', () => (

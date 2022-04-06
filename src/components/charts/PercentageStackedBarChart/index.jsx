@@ -8,8 +8,6 @@ import helper from '../helper';
 import './PercentageStackedBarChart.css';
 import LockedContent from '../LockedContent';
 
-const getPercentageDataLabels = chartData => chartData.map(entry => entry.name);
-
 // FIXME: add back in animation (https://github.com/recharts/recharts/issues/1083)
 class PercentageStackedBarChart extends React.Component {
   getItemColor(index) {
@@ -28,11 +26,9 @@ class PercentageStackedBarChart extends React.Component {
         </div>
       );
     } else {
-      const percentageData = helper.getPercentageData(
-        this.props.data,
-        this.props.percentageFixedPoint,
-      );
-      const percentageDataLabels = getPercentageDataLabels(this.props.data);
+      // eslint-disable-next-line max-len
+      const percentageData = helper.mapData(this.props.data, this.props.percentageFixedPoint, this.props.primaryKey, this.props.secondaryKey);
+      const percentageDataLabels = helper.getUniquePercentageLabels(this.props.data);
       const { barChartStyle, xAxisStyle, labelListStyle } = this.props;
       chart = (
         <div className='percentage-bar-chart__content'>
@@ -47,7 +43,7 @@ class PercentageStackedBarChart extends React.Component {
                   tickFormatter={helper.addPercentage}
                   {...xAxisStyle}
                 />
-                <YAxis axisLine={false} tickLine={false} dataKey='name' type='category' hide />
+                <YAxis axisLine={false} tickLine={false} dataKey={this.props.secondaryKey} hide={this.props.secondaryKey === ''} type='category' />
                 {
                   percentageDataLabels.map((name, index) => (
                     <Bar
@@ -117,6 +113,8 @@ PercentageStackedBarChart.propTypes = {
   title: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(ChartDataShape).isRequired,
   percentageFixedPoint: PropTypes.number,
+  primaryKey: PropTypes.string,
+  secondaryKey: PropTypes.string,
   barChartStyle: PropTypes.object,
   xAxisStyle: PropTypes.object,
   labelListStyle: PropTypes.object,
@@ -128,6 +126,8 @@ PercentageStackedBarChart.propTypes = {
 
 PercentageStackedBarChart.defaultProps = {
   percentageFixedPoint: 2,
+  primaryKey: 'name',
+  secondaryKey: '',
   barChartStyle: {
     layout: 'vertical',
     margin: {

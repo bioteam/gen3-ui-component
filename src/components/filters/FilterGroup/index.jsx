@@ -80,6 +80,25 @@ class FilterGroup extends React.Component {
     this.currentFilterListRef = React.createRef();
   }
 
+  handleDateRangeDrag(sectionIndex, dateRanges, lowerBound, upperBound) {
+    this.setState((prevState) => {
+      // update filter status
+      const newFilterStatus = prevState.filterStatus.slice(0);
+      newFilterStatus[prevState.selectedTabIndex][sectionIndex] = [lowerBound, upperBound];
+
+      // update filter results
+      const newFilterResults = prevState.filterResults;
+      const field = this.props.filterConfig.tabs[prevState.selectedTabIndex].fields[sectionIndex];
+      newFilterResults[field] = { selectedValues: dateRanges };
+      return {
+        filterStatus: newFilterStatus,
+        filterResults: newFilterResults,
+      };
+    }, () => {
+      this.callOnFilterChange();
+    });
+  }
+
   selectTab(index) {
     this.setState({ selectedTabIndex: index });
   }
@@ -309,6 +328,7 @@ class FilterGroup extends React.Component {
                 onSelect: this.handleSelect.bind(this),
                 onCombineOptionToggle: this.handleCombineOptionToggle.bind(this),
                 onAfterDrag: this.handleDrag.bind(this),
+                onAfterDateRangeDrag: this.handleDateRangeDrag.bind(this),
                 hideZero: this.props.hideZero,
                 ref: this.currentFilterListRef,
               },

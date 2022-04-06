@@ -9,6 +9,7 @@ import SingleSelectFilter from '../SingleSelectFilter';
 import Chip from '../Chip';
 import RangeFilter from '../RangeFilter';
 import './FilterSection.css';
+import DateRange from '../DateRange';
 
 const filterVisibleStatusObj = (optionList, inputText) => {
   const res = {};
@@ -224,6 +225,13 @@ class FilterSection extends React.Component {
     return null;
   }
 
+  handleDragDateRange(lowerBound, upperBound) {
+    this.setState(() => ({
+      filterStatus: [lowerBound, upperBound],
+    }));
+    this.props.onAfterDateRangeDrag(lowerBound, upperBound);
+  }
+
   handleSetCombineModeOption(combineModeIn) {
     // Combine mode: AND or OR
     this.setState({ combineMode: combineModeIn });
@@ -332,10 +340,15 @@ class FilterSection extends React.Component {
     let isSearchFilter = false;
     let isTextFilter = false;
     let isRangeFilter = false;
+    let isDateRange = false;
+    let dateRangeOptions = [];
     if (this.props.isSearchFilter) {
       isSearchFilter = true;
     } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'singleSelect') {
       isTextFilter = true;
+    } else if (this.props.options.length > 0 && this.props.options[0].filterType === 'dateRange') {
+      isDateRange = true;
+      dateRangeOptions = this.props.options[0].dates.sort((a, b) => Date.parse(a) < Date.parse(b));
     } else {
       isRangeFilter = true;
     }
@@ -536,6 +549,24 @@ class FilterSection extends React.Component {
                   );
                 }) : null
           }
+          {
+            isDateRange && this.state.isExpanded && this.props.options
+              .filter(option => this.state.optionsVisibleStatus[option.text])
+              .map(() => {
+                const lowerBound = this.state.filterStatus.length !== 2
+                  ? 0 : this.state.filterStatus[0];
+                const upperBound = this.state.filterStatus.length !== 2
+                  ? (dateRangeOptions.length - 1) : this.state.filterStatus[1];
+                return (
+                <DateRange
+                  dates={dateRangeOptions}
+                  lowerBound={lowerBound}
+                  upperBound={upperBound}
+                  onAfterDrag={(lb, ub) => this.handleDragDateRange(lb, ub)}
+                />
+                );
+              })
+          }
           {isTextFilter && this.getShowMoreButton()}
         </div>
       </div>
@@ -547,7 +578,7 @@ FilterSection.propTypes = {
   title: PropTypes.string,
   tooltip: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
-    filterType: PropTypes.oneOf(['singleSelect', 'range']).isRequired,
+    filterType: PropTypes.oneOf(['singleSelect', 'range', 'dateRange']).isRequired,
     text: PropTypes.string,
     count: PropTypes.number, // both filters need this for access control
 
@@ -560,10 +591,13 @@ FilterSection.propTypes = {
     max: PropTypes.number,
     rangeStep: PropTypes.number, // by default 1
 
+    // for date range filter
+    dates: PropTypes.arrayOf(PropTypes.string),
   })),
   onSelect: PropTypes.func.isRequired,
   onCombineOptionToggle: PropTypes.func,
   onAfterDrag: PropTypes.func.isRequired,
+  onAfterDateRangeDrag: PropTypes.func.isRequired,
   onClear: PropTypes.func,
   expanded: PropTypes.bool,
   onToggle: PropTypes.func,

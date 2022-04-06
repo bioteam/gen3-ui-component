@@ -14,7 +14,13 @@ const calculateChartData = (data, percentageFixedPoint) => {
   });
 };
 
-const getPercentageData = (chartData, percentageFixedPoint) => {
+const getUniquePercentageLabels = (chartData) => {
+  const names = chartData.map(item => item.name);
+  const uniqueNames = new Set(names);
+  return [...uniqueNames];
+};
+
+const getPercentageData = (chartData, percentageFixedPoint, primaryKey) => {
   const result = {};
   const sum = chartData.reduce((a, entry) => a + entry.value, 0);
   let percentRemaining = 100;
@@ -27,9 +33,70 @@ const getPercentageData = (chartData, percentageFixedPoint) => {
     }
     percentage = Number(Number.parseFloat(percentage).toFixed(percentageFixedPoint));
     percentRemaining -= percentage;
-    result[entry.name] = percentage;
+    const entryValue = result[entry[primaryKey]];
+    if (entryValue == null) {
+      result[entry[primaryKey]] = percentage;
+    } else {
+      result[entry[primaryKey]] = entryValue + percentage;
+    }
   });
-  return [result];
+  return result;
+};
+
+const dateHasher = (
+  chartData,
+  primaryKey,
+  secondaryKey,
+) => {
+  const dateHash = {};
+  chartData.forEach((dataPoint) => {
+    const variantHash = dateHash[dataPoint[secondaryKey]];
+    const storedData = {};
+    storedData[primaryKey] = dataPoint[primaryKey];
+    storedData.value = dataPoint.value;
+    if (variantHash == null) {
+      dateHash[dataPoint[secondaryKey]] = [storedData];
+    } else {
+      dateHash[dataPoint[secondaryKey]] = [...variantHash, storedData];
+    }
+  });
+  return dateHash;
+};
+
+const percentageMapper = (
+  hashedDates,
+  percentageFixedPoint,
+  primaryKey,
+  secondaryKey,
+) => {
+  const percentageMap = [];
+  Object.keys(hashedDates).forEach((k) => {
+    const pcts = getPercentageData(hashedDates[k], percentageFixedPoint, primaryKey);
+    const hashKey = {};
+    hashKey[secondaryKey] = k;
+    percentageMap.push({ ...hashKey, ...pcts });
+  });
+  return percentageMap;
+};
+
+const mapData = (
+  chartData,
+  percentageFixedPoint,
+  primaryKey,
+  secondaryKey,
+) => {
+  if (secondaryKey === '') {
+    const dat = getPercentageData(chartData, percentageFixedPoint, primaryKey);
+    return [dat];
+  }
+  const dataSortedByDates = dateHasher(chartData, primaryKey, secondaryKey);
+  const mappedData = percentageMapper(
+    dataSortedByDates,
+    percentageFixedPoint,
+    primaryKey,
+    secondaryKey,
+  );
+  return mappedData;
 };
 
 const categoricalColors = [
@@ -162,6 +229,8 @@ const helper = {
   parseParamWidth,
   categoricalColors,
   shouldHideChart,
+  getUniquePercentageLabels,
+  mapData,
 };
 
 export default helper;
