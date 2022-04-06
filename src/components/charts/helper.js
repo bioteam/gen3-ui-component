@@ -1,6 +1,6 @@
-const percentageFormatter = showPercentage => v => (showPercentage ? `${v}%` : v);
+const percentageFormatter = (showPercentage) => (v) => (showPercentage ? `${v}%` : v);
 
-const addPercentage = v => (percentageFormatter(true)(v));
+const addPercentage = (v) => (percentageFormatter(true)(v));
 
 const calculateChartData = (data, percentageFixedPoint) => {
   const sum = data.reduce((a, entry) => a + entry.value, 0);
@@ -9,13 +9,13 @@ const calculateChartData = (data, percentageFixedPoint) => {
     let percentage;
     percentage = (entry.value * 100) / sum;
     percentage = Number(Number(percentage).toFixed(percentageFixedPoint));
-    const widthPercentage = entry.value * 100 / max;
-    return Object.assign({ percentage, widthPercentage }, entry);
+    const widthPercentage = (entry.value * 100) / max;
+    return { percentage, widthPercentage, ...entry };
   });
 };
 
 const getUniquePercentageLabels = (chartData) => {
-  const names = chartData.map(item => item.name);
+  const names = chartData.map((item) => item.name);
   const uniqueNames = new Set(names);
   return [...uniqueNames];
 };
@@ -110,7 +110,7 @@ const categoricalColors = [
   '#ef8523',
   '#26d9b1',
 ];
-const getCategoryColor = index => (categoricalColors[index % categoricalColors.length]);
+const getCategoryColor = (index) => (categoricalColors[index % categoricalColors.length]);
 
 const getCategoryColorFrom2Colors = (index) => {
   const colors = [
@@ -120,8 +120,7 @@ const getCategoryColorFrom2Colors = (index) => {
   return colors[index % colors.length];
 };
 
-const getDataKey = showPercentage => (showPercentage ? 'percentage' : 'value');
-
+const getDataKey = (showPercentage) => (showPercentage ? 'percentage' : 'value');
 
 const prettifyValueName = (name) => {
   if (name === '__missing__') {
@@ -133,8 +132,8 @@ const prettifyValueName = (name) => {
 const transformArrangerDataToChart = (field, sqonValues) => {
   const chartData = [];
   field.buckets
-    .filter(bucket => (sqonValues === null || sqonValues.includes(bucket.key)))
-    .forEach(bucket => chartData.push({
+    .filter((bucket) => (sqonValues === null || sqonValues.includes(bucket.key)))
+    .forEach((bucket) => chartData.push({
       name: prettifyValueName(bucket.key),
       value: bucket.doc_count,
     }),
@@ -159,7 +158,7 @@ const transformDataToCount = (field, label, sqonValues) => ({
  */
 const getSQONValues = (sqon, field) => {
   if (!sqon || !sqon.content) return null;
-  const sqonItems = sqon.content.filter(item => item.content.field === field);
+  const sqonItems = sqon.content.filter((item) => item.content.field === field);
   if (!sqonItems || sqonItems.length !== 1) return null;
   const sqonValues = sqonItems[0].content.value;
   return sqonValues;
@@ -209,9 +208,9 @@ const getCharts = (data, dataExplorerConfig, sqon) => {
   return { summaries, countItems, stackedBarCharts };
 };
 
-const parseParamWidth = width => ((typeof width === 'number') ? `${width}px` : width);
+const parseParamWidth = (width) => ((typeof width === 'number') ? `${width}px` : width);
 
-const shouldHideChart = (data, lockValue) => data.find(item => item.value === lockValue);
+const shouldHideChart = (data, lockValue) => data.find((item) => item.value === lockValue);
 
 const helper = {
   percentageFormatter,

@@ -17,6 +17,10 @@ const projectOptions = [
   { text: 'ndh-test', filterType: 'singleSelect', count: 123 },
 ];
 
+const dateOptions = [
+  { filterType: 'dateRange', dates: ['2021-01-01', '2021-02-01', '2021-03-01', '2021-04-01', '2021-05-01', '2021-06-01', '2021-07-01', '2021-08-01', '2021-09-01', '2021-10-01', '2021-11-01', '2021-12-01'] },
+];
+
 const studyOptions = [
   { text: 'MACS', filterType: 'singleSelect', count: 123 },
   { text: 'WIHS', filterType: 'singleSelect', count: 123 },
@@ -106,6 +110,7 @@ const fileCountOptions = [
 const projectSections = [
   { title: 'Project', options: projectOptions },
   { title: 'Study', options: studyOptions },
+  { title: 'Collection Date', options: dateOptions },
 ];
 
 const subjectSections = [
@@ -114,6 +119,7 @@ const subjectSections = [
   { title: 'Race', options: raceOptions },
   { title: 'Ethnicity', options: ethnicityOptions },
   { title: 'Age', options: ageOptions },
+  { title: 'Date', options: dateOptions },
   { title: 'Big List', options: guidOptions },
 ];
 
@@ -157,6 +163,7 @@ const filterConfig = {
     fields: [
       'project',
       'study',
+      'dates',
     ],
   },
   {
@@ -232,6 +239,15 @@ storiesOf('Filters', module)
       tierAccessLimit={1000}
     />
   ))
+  .add('FilterSection With Date Range Filter', () => (
+    <FilterSection
+      title={'Date Range Selector'}
+      options={dateOptions}
+      onSelect={action('checked')}
+      onAfterDrag={action('range change')}
+      tierAccessLimit={1000}
+    />
+  ))
   .add('FilterSection for array-type field', () => (
     <FilterSection
       title={'Consent Codes'}
@@ -256,17 +272,17 @@ storiesOf('Filters', module)
           return {
             options: guidOptions
               .slice(offset, offset + pageSize)
-              .map(option => ({ value: option.text, label: option.text })),
+              .map((option) => ({ value: option.text, label: option.text })),
             hasMore: guidOptions.length > offset + pageSize,
           };
         }
         const filteredOptions = guidOptions.filter(
-          option => option.text.indexOf(searchString) !== -1,
+          (option) => option.text.indexOf(searchString) !== -1,
         );
         return {
           options: filteredOptions
             .slice(offset, offset + pageSize)
-            .map(option => ({ value: option.text, label: option.text })),
+            .map((option) => ({ value: option.text, label: option.text })),
           hasMore: filteredOptions.length > offset + pageSize,
         };
       }}
