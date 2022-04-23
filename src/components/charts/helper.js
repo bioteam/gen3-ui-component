@@ -14,10 +14,10 @@ const calculateChartData = (data, percentageFixedPoint) => {
   });
 };
 
-const getUniquePercentageLabels = (chartData) => {
-  const names = chartData.map((item) => item.name);
-  const uniqueNames = new Set(names);
-  return [...uniqueNames];
+const getUniquePercentageLabels = (chartData, primaryKey) => {
+  const keys = chartData.map((item) => item[primaryKey]);
+  const uniqueKeys = new Set(keys);
+  return [...uniqueKeys];
 };
 
 const getPercentageData = (chartData, percentageFixedPoint, primaryKey) => {

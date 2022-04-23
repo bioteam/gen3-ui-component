@@ -28,7 +28,8 @@ class PercentageStackedBarChart extends React.Component {
     } else {
       // eslint-disable-next-line max-len
       const percentageData = helper.mapData(this.props.data, this.props.percentageFixedPoint, this.props.primaryKey, this.props.secondaryKey);
-      const percentageDataLabels = helper.getUniquePercentageLabels(this.props.data);
+      // eslint-disable-next-line max-len
+      const percentageDataLabels = helper.getUniquePercentageLabels(this.props.data, this.props.primaryKey);
       const { barChartStyle, xAxisStyle, labelListStyle } = this.props;
       chart = (
         <div className='percentage-bar-chart__content'>
