@@ -58,7 +58,7 @@
   display: inline-block;
   vertical-align: text-top;
   margin-left: 6px;
-  flex: 1 1 80%;
+  flex: 1 1 30%;
   overflow-wrap: break-word;
 }
 
@@ -76,10 +76,10 @@
 .percentage-bar-chart__chart {
   width: 50%;
   display: flex;
-  flex: 1 1 50%;
+  flex: 1 1 80%;
   min-width: 0;
-  max-width: 50%;
-  height: 155px;
+  max-width: 80%;
+  height: 500px;
 }
 
 .percentage-bar-chart__locked {

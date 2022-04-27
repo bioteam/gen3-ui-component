@@ -135,7 +135,7 @@ PercentageStackedBarChart.defaultProps = {
       top: 28,
       right: 12,
       bottom: 8,
-      left: 12,
+      left: 60,
     },
     barSize: 30,
   },

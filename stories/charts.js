@@ -15,14 +15,26 @@ const virusData = [
 ];
 
 const pangoData = [
-  { variant: 'C.32', value: 1000, date: '2021-04-30' },
-  { variant: 'P.1.14', value: 150, date: '2020-04-09' },
-  { variant: 'N.4', value: 205, date: '2021-06-18' },
-  { variant: 'N.4', value: 341, date: '2020-04-09' },
-  { variant: 'C.32', value: 1243, date: '2020-04-09' },
-  { variant: 'C.32', value: 5234, date: '2021-04-30' },
-  { variant: 'P.1.14', value: 124, date: '2021-04-30' },
-  { variant: 'P.1.14', value: 854, date: '2021-04-30' },
+  { Collection_Date: '2020-05-15', Latest_Pango_Lineage: 'null', value: 1 },
+  { Collection_Date: '2020-12-24', Latest_Pango_Lineage: 'null', value: 1 },
+  { Collection_Date: '2021-07-21', Latest_Pango_Lineage: 'AY.25', value: 1 },
+  { Collection_Date: '2021-08-27', Latest_Pango_Lineage: 'AY.25', value: 1 },
+  { Collection_Date: '2021-08-27', Latest_Pango_Lineage: 'AY.44', value: 1 },
+  { Collection_Date: '2021-09-20', Latest_Pango_Lineage: 'AY.5', value: 1 },
+  { Collection_Date: '2021-11-30', Latest_Pango_Lineage: 'null', value: 1 },
+  { Collection_Date: '2021-11-30', Latest_Pango_Lineage: 'AY.39.1', value: 1 },
+  { Collection_Date: '2021-10-24', Latest_Pango_Lineage: 'AY.39', value: 1 },
+  { Collection_Date: '2021-11-21', Latest_Pango_Lineage: 'AY.47', value: 1 },
+  { Collection_Date: '2021-12-23', Latest_Pango_Lineage: 'BA.1', value: 1 },
+  { Collection_Date: '2020-04-03', Latest_Pango_Lineage: 'B.1', value: 1 },
+  { Collection_Date: '2020-11-10', Latest_Pango_Lineage: 'B.1.1.464', value: 1 },
+  { Collection_Date: '2021-09-15', Latest_Pango_Lineage: 'AY.103', value: 1 },
+  { Collection_Date: '2021-11-24', Latest_Pango_Lineage: 'null', value: 1 },
+  { Collection_Date: '2021-12-12', Latest_Pango_Lineage: 'AY.25.1', value: 1 },
+  { Collection_Date: '2021-12-27', Latest_Pango_Lineage: 'BA.1', value: 1 },
+  { Collection_Date: '2022-01-12', Latest_Pango_Lineage: 'BA.1.1', value: 1 },
+  { Collection_Date: '2022-01-13', Latest_Pango_Lineage: 'BA.1.1', value: 1 },
+  { Collection_Date: '2021-05-10', Latest_Pango_Lineage: 'B.1.1.7', value: 1 },
 ];
 
 const genderData = [
@@ -151,8 +163,8 @@ storiesOf('Chart', module)
   .add('PercentageStackedBarChart with Dates', () => (
     <PercentageStackedBarChart
       data={pangoData}
-      primaryKey='variant'
-      secondaryKey='date'
+      primaryKey='Latest_Pango_Lineage'
+      secondaryKey='Collection_Date'
       title='percentage stacked bar chart date'
     />
   ))
