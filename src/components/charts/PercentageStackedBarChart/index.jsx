@@ -1,6 +1,6 @@
 import {
   BarChart, Bar, Tooltip, XAxis, YAxis,
-  CartesianGrid, LabelList, ResponsiveContainer,
+  CartesianGrid, ResponsiveContainer,
 } from 'recharts';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -30,7 +30,7 @@ class PercentageStackedBarChart extends React.Component {
       const percentageData = helper.mapData(this.props.data, this.props.percentageFixedPoint, this.props.primaryKey, this.props.secondaryKey);
       // eslint-disable-next-line max-len
       const percentageDataLabels = helper.getUniquePercentageLabels(this.props.data, this.props.primaryKey);
-      const { barChartStyle, xAxisStyle, labelListStyle } = this.props;
+      const { barChartStyle, xAxisStyle } = this.props;
       chart = (
         <div className='percentage-bar-chart__content'>
           <div className='percentage-bar-chart__chart'>
@@ -54,20 +54,20 @@ class PercentageStackedBarChart extends React.Component {
                       isAnimationActive={false}
                       fill={this.getItemColor(index)}
                     >
-                      <LabelList
+                      {/* <LabelList
                         dataKey={name}
                         position={labelListStyle.position}
                         style={labelListStyle}
                         formatter={helper.addPercentage}
                         className='percentage-bar-chart__label-list'
-                      />
+                      /> */}
                     </Bar>
                   ))
                 }
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className='percentage-bar-chart__legend'>
+          {/* <div className='percentage-bar-chart__legend'>
             <div className='percentage-bar-chart__ul'>
               {
                 percentageDataLabels.map((name, index) => (
@@ -82,13 +82,14 @@ class PercentageStackedBarChart extends React.Component {
                       {name}
                     </span>
                     <span className='percentage-bar-chart__legend-value'>
-                      {'('.concat(Number(this.props.data[index].value).toLocaleString()).concat(')')}
+                      {'('.concat(Number(this.props.data[index].value).toLocaleString())
+                      .concat(')')}
                     </span>
                   </li>
                 ))
               }
             </div>
-          </div>
+          </div> */}
         </div>
       );
     }
@@ -135,7 +136,7 @@ PercentageStackedBarChart.defaultProps = {
       top: 28,
       right: 12,
       bottom: 8,
-      left: 60,
+      left: 28,
     },
     barSize: 30,
   },
