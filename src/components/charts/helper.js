@@ -17,7 +17,7 @@ const calculateChartData = (data, percentageFixedPoint) => {
 const getUniquePercentageLabels = (chartData, primaryKey) => {
   const keys = chartData.map((item) => item[primaryKey]);
   const uniqueKeys = new Set(keys);
-  return [...uniqueKeys];
+  return [...uniqueKeys].sort();
 };
 
 const getPercentageData = (chartData, percentageFixedPoint, primaryKey) => {
